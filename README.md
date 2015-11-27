@@ -1,2 +1,28 @@
 # fis-parser-smarty-replace
 parser for smarty tmpl in fis
+
+目的:
+
+由于使用html-minifier将html压缩的时候会将所有的tag都闭合，
+在这种情况下，smarty模板中include进来的部分也会是经过标签闭合处理的，从而导致错误。
+此插件的作用就是将原有smarty模板中的
+```
+<include file="a/b.html">
+```
+替换成以下格式，以便于被fis支持:
+```
+<link rel="import" href="[rootDir]a/b.html?__inline">
+```
+
+用法:
+```javascript
+fis.match('*.html', {
+	parser: fis.plugin('smarty-replace', {
+		preTag: '{',
+		afterTag: '}',
+		rootDir: '../'
+	})
+});
+```
+
+rootDir: 默认为""。
